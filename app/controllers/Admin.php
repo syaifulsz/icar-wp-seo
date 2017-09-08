@@ -178,7 +178,7 @@ class Admin
 
         $html .= "<select name=\"{$this->model->input_name($input_name)}[]\" multiple class=\"js-selectize--{$input_name}\" style=\"width: 350px; height: 38px; visibility: hidden;\" placeholder=\"{$placeholder}\">";
         foreach ($options as $option_key => $option_value) {
-            $html .= "<option value=\"{$option_key}\"  ". (in_array($option_key, $values) ? 'selected="selected"' : '') .">{$option_value}</option>";
+            $html .= "<option value=\"{$option_key}\"  ". (is_array($values) && in_array($option_key, $values) ? 'selected="selected"' : '') .">{$option_value}</option>";
         }
         $html .= "</select>";
 

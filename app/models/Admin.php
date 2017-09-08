@@ -16,6 +16,7 @@ class Admin
     protected $social_twitter;
     protected $social_facebook;
     protected $social_facebook_app_id;
+    protected $social_facebook_pages_id;
 
     // default category options
     protected $seo_home_itemlist_status = false;

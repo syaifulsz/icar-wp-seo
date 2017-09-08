@@ -55,7 +55,8 @@ class SEO
                 'url' => $obj->getUrl(),
                 'image' => $obj->seoMainImage(),
                 'keywords' => $obj->seoKeywords(),
-                'twitter_username' => $this->admin->getInput('social_twitter')
+                'twitter_username' => $this->admin->getInput('social_twitter'),
+                'fb_app_id' => $this->admin->getInput('social_facebook_app_id')
             ]);
 
             $microdata = new \iCarWPSEO\Microdatas\Post([
@@ -174,7 +175,8 @@ class SEO
                 'keywords' => $obj->seoKeywords(),
                 'twitter_username' => $this->admin->getInput('social_twitter'),
                 'twitter_card' => 'summary',
-                'og_type' => 'website'
+                'og_type' => 'website',
+                'fb_app_id' => $this->admin->getInput('social_facebook_app_id')
             ]);
 
             $microdata = new \iCarWPSEO\Microdatas\Category([
@@ -243,7 +245,8 @@ class SEO
                 'keywords' => $obj->seoKeywords(),
                 'twitter_username' => $this->admin->getInput('social_twitter'),
                 'twitter_card' => 'summary',
-                'og_type' => 'website'
+                'og_type' => 'website',
+                'fb_app_id' => $this->admin->getInput('social_facebook_app_id')
             ]);
 
             $microdata = new \iCarWPSEO\Microdatas\Home([

@@ -25,6 +25,7 @@
         <h2>Social network settings</h2>
         <table class="form-table">
             <?= $this->item_html('Facebook App ID', 'social_facebook_app_id') ?>
+            <?= $this->item_html('Facebook Pages ID', 'social_facebook_pages_id') ?>
             <?= $this->item_html('Facebook', 'social_facebook', 'Provice full Facebook url, starts with https//') ?>
             <?= $this->item_html('Twitter', 'social_twitter', 'Provide Twitter username, starts with @') ?>
         </table>

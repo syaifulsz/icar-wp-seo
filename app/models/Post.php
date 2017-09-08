@@ -166,17 +166,21 @@ class Post
 
         if ($medias) {
             foreach ($medias as $media) {
-                $parse = getimagesize($media);
-                if (isset($parse[0]) && isset($parse[1])) {
-                    $images[] = [
-                        'url' => $media,
-                        'width' => $parse[0],
-                        'height' => $parse[1]
-                    ];
+                if ($media) {
+                    $parse = @getimagesize($media);
+                    if (isset($parse[0]) && isset($parse[1])) {
+                        $images[] = [
+                            'url' => $media,
+                            'width' => $parse[0],
+                            'height' => $parse[1]
+                        ];
+                    }
                 }
             }
-        } else {
-            $parse = getimagesize($this->getAppLogo());
+        }
+
+        if (!$images && $this->getAppLogo()) {
+            $parse = @getimagesize($this->getAppLogo());
             if (isset($parse[0]) && isset($parse[1])) {
                 $images[] = [
                     'url' => $this->getAppLogo(),

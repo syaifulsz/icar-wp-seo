@@ -19,6 +19,9 @@ class Meta
 
     protected $og_type = 'article';
 
+    protected $fb_app_id;
+    protected $fb_pages_id;
+
     public function __construct(array $array = [])
 	{
 		foreach ($array as $property => $value) {
@@ -67,6 +70,9 @@ class Meta
         $seo['og:type'] = $this->og_type;
 
         $seo['application-name'] = $this->app_name;
+
+        if ($this->fb_app_id) $seo['fb:app_id'] = $this->fb_app_id;
+        if ($this->fb_pages_id) $seo['fb:pages'] = $this->fb_pages_id;
 
         $metas .= "<title>{$this->title}</title>" . PHP_EOL;
 
