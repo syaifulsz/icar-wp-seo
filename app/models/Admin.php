@@ -9,21 +9,24 @@ class Admin
     protected $app_logo;
     protected $language;
 
+    protected $seo_cache_status = false;
+    protected $seo_cache_duration = 3600;
+
     // social network options
     protected $social_twitter;
     protected $social_facebook;
     protected $social_facebook_app_id;
 
     // default category options
-    protected $seo_title;
-    protected $seo_description;
-    protected $seo_keywords;
+    protected $seo_home_itemlist_status = false;
+    protected $seo_home_title;
+    protected $seo_home_description;
+    protected $seo_home_keywords;
+    protected $seo_home_categories;
 
     // default category options
     protected $category_itemlist_status = false;
-    protected $category_seo_title;
     protected $category_seo_description;
-    protected $category_seo_keywords;
 
     public function __construct(array $array = [])
 	{
@@ -35,6 +38,22 @@ class Admin
     public function __get($property)
     {
         if (property_exists($this, $property)) return $this->$property;
+    }
+
+    public function getCacheDurationText()
+    {
+        $duration = $this->getInput('seo_cache_duration');
+        $init = $duration;
+        $hours = floor($init / 3600);
+        $minutes = floor(($init / 60) % 60);
+        $seconds = $init % 60;
+        return "You have set cache duration to<strong>" . ($hours ? " {$hours} hour" . ($hours > 1 ? 's' : '') : '') . ($minutes ? ($hours ? ',' : '') . " {$minutes} minute" . ($minutes > 1 ? 's' : '') : '') . '</strong>';
+    }
+
+    public function getCacheDuration()
+    {
+        if (!$this->getInput('seo_cache_duration')) return $this->seo_cache_duration;
+        return $this->getInput('seo_cache_duration');
     }
 
     public function getAppLogo()

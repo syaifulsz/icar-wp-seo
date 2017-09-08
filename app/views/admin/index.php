@@ -1,36 +1,4 @@
-<?php
-
-function item_html($title, $input_name, $description = null)
-{
-    $html  = "<tr valign=\"top\"><th scope=\"row\">{$title}</th>";
-    $html .= "<td><input type=\"text\" name=\"{$input_name}\" value=\"". get_option($input_name) ."\" class=\"regular-text\" />";
-    if ($description) {
-        $html .= "<p class=\"description\">{$description}</p>";
-    }
-    $html .= "</td>";
-    return $html;
-}
-
-function item_media_html($title, $input_name, $description = null)
-{
-    $id = get_option($input_name);
-    return "<tr valign=\"top\">
-        <th scope=\"row\">Application Logo</th>
-        <td>
-            <div class=\"media-upload  media-upload--{$input_name}\">
-                <img src=\"". ($id ? wp_get_attachment_url($id) : '') ."\" style=\"max-height: 100px; ". ($id ? '' : 'display: none;') ."\" class=\"media-upload__preview  media-upload__preview--{$input_name}  js-media-upload__preview--{$input_name}\">
-                <input type=\"hidden\" name=\"{$input_name}\" class=\"media-upload__input  media-upload__input--{$input_name}  js-media-upload__input--{$input_name}\" value=\"{$id}\">
-                <button type=\"button\" name=\"button\"  data-name=\"{$input_name}\"  class=\"button  media-upload__button  js-media-upload__button  media-upload__button--{$input_name}  js-media-upload__button--{$input_name}\">". ($id ? 'Upload or Reselect Image' : 'Upload or Select Image') ."</button>
-                ". ($description ? "<p class=\"description\"><small>Minimum image size is <strong>476px</strong>.</small></p>" : '') ."
-            </div>
-        </td>
-    </tr>";
-}
-
-?>
-
 <div class="wrap">
-
     <h1>iCar WordPress SEO</h1>
     <?php settings_errors(); ?>
     <form method="post" action="options.php">
@@ -39,18 +7,64 @@ function item_media_html($title, $input_name, $description = null)
 
         <h2>Application related settings</h2>
         <table class="form-table">
-            <?= item_html('Application Name', $this->input_name('app_name')) ?>
-            <?= item_html('Language', $this->input_name('language')) ?>
-            <?= item_media_html('Application Logo', $this->input_name('app_logo')) ?>
+            <?= $this->item_html('Application Name', 'app_name') ?>
+            <?= $this->item_html('Language', 'language') ?>
+            <?= $this->item_media_html('Application Logo', 'app_logo') ?>
+            <?= $this->item_select_html('Cache Status', 'seo_cache_status', [
+                0 => 'OFF',
+                1 => 'ON'
+            ], 'JSON-LD microdata may decrease page performance a bit. Especially with `ItemList` enabled. So we\'ll keep cache an <strong>hour</strong>') ?>
+            <?= $this->item_html('Cache Duration', 'seo_cache_duration', ($this->model->getCacheDuration() ? "{$this->model->getCacheDurationText()}.<br />" : '') . 'Default cache duration is <strong>3600 seconds (1 hour)</strong>') ?>
+            <tr>
+                <th valign="top">Delete Cache</th>
+                <td><p><a href="<?= admin_url($this->get_admin_url() . "&delete_all_cache=true") ?>" class="button button-primary">Delete All Cache</a></p></td>
+            </tr>
         </table>
+
 
         <h2>Social network settings</h2>
         <table class="form-table">
-            <?= item_html('Facebook App ID', $this->input_name('social_facebook_app_id')) ?>
-            <?= item_html('Facebook', $this->input_name('social_facebook'), 'Provice full Facebook url, starts with https//') ?>
-            <?= item_html('Twitter', $this->input_name('social_twitter'), 'Provide Twitter username, starts with @') ?>
+            <?= $this->item_html('Facebook App ID', 'social_facebook_app_id') ?>
+            <?= $this->item_html('Facebook', 'social_facebook', 'Provice full Facebook url, starts with https//') ?>
+            <?= $this->item_html('Twitter', 'social_twitter', 'Provide Twitter username, starts with @') ?>
+        </table>
+
+        <h2>Home page settings</h2>
+        <table class="form-table">
+            <?= $this->item_html('Home Title', 'seo_home_title') ?>
+            <?= $this->item_textarea_html('Home Description', 'seo_home_description') ?>
+            <?= $this->item_select_multi_html(
+                'Home Categories',
+                'seo_home_categories',
+                $this->get_categories(),
+                '
+                    Main categories that showing or featured on home page.<br />
+                    Keywords is dynamically generated from latest posts that showing on these categories.
+                '
+            ) ?>
+            <?= $this->item_select_html('Home ItemList (Microdata)', 'seo_home_itemlist_status', [
+                0 => 'OFF',
+                1 => 'ON'
+            ], 'Enabling this may decrease home page performance a bit. But this will super benefit home page SEO') ?>
+        </table>
+
+        <h2>Category default settings</h2>
+        <table class="form-table">
+            <?= $this->item_textarea_html(
+                'Category Description',
+                'category_seo_description',
+                '
+                    By default, empty description will use the first two tags from latest posts on category page.<br />
+                    Instead, if you fill in this description, this value be use as description if category description is empty.
+                '
+            ) ?>
+            <?= $this->item_select_html('Category ItemList (Microdata)', 'category_itemlist_status', [
+                0 => 'OFF',
+                1 => 'ON'
+            ], 'Enabling this may decrease category page performance a bit. But this will super benefit category page SEO') ?>
         </table>
 
         <?php submit_button(); ?>
+
     </form>
 </div>

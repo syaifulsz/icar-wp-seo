@@ -7,6 +7,7 @@ class Post
     protected $ID;
     protected $author_ID;
     protected $content;
+    protected $excerpt;
     protected $title;
     protected $date_modified;
     protected $date_created;
@@ -71,7 +72,7 @@ class Post
         $tags = [];
         if ($this->tags) {
             foreach ($this->tags as $tag) {
-                $tags[$tag->slug] = ucfirst($tag->name);
+                $tags[$tag->slug] = ucwords($tag->name);
             }
         }
 
@@ -109,13 +110,13 @@ class Post
 
         if ($this->tags) {
             foreach ($this->tags as $tag) {
-                $keywords[$tag->slug] = ucfirst($tag->name);
+                $keywords[$tag->slug] = ucwords($tag->name);
             }
         }
 
         if ($this->categories) {
             foreach ($this->categories as $category) {
-                $keywords[$category->slug] = ucfirst($category->name);
+                $keywords[$category->slug] = ucwords($category->name);
             }
         }
 
@@ -129,6 +130,8 @@ class Post
 
     public function getExcerpt($length = 150)
     {
+        if ($this->excerpt) return $this->excerpt;
+
         $content = strip_shortcodes($this->content); 	      // removes shortcodes if any
         $content = strip_tags($content); 					  // removes html if any
         $content = str_replace('&nbsp;', '', $content);

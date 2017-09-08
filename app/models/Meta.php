@@ -68,11 +68,11 @@ class Meta
 
         $seo['application-name'] = $this->app_name;
 
-        $metas .= "<title>{$this->title}</title>";
+        $metas .= "<title>{$this->title}</title>" . PHP_EOL;
 
         if ($seo) {
             foreach ($seo as $meta_name => $meta_content) {
-                if ($meta_content) $metas .= "<meta name=\"{$meta_name}\" content=\"{$meta_content}\">";
+                if ($meta_content) $metas .= "<meta name=\"{$meta_name}\" content=\"{$meta_content}\">" . PHP_EOL;
             }
         }
 

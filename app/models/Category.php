@@ -20,7 +20,7 @@ class Category extends \iCarWPSEO\Models\Post
             foreach ($this->posts as $post) {
                 $post_tags = wp_get_post_tags($post->ID);
                 foreach ($post_tags as $tag_key => $tag) {
-                    if ($tag_key < 2) $tags[$tag->slug] = ucfirst($tag->name);
+                    if ($tag_key < 2) $tags[$tag->slug] = ucwords($tag->name);
                 }
             }
         }
@@ -45,7 +45,7 @@ class Category extends \iCarWPSEO\Models\Post
 
     public function seoDescription()
     {
-        if (!$this->description && $this->seoKeywords()) return $this->seoKeywords();
-        return $this->description;
+        if (!$this->getExcerpt() && $this->seoKeywords()) return $this->seoKeywords();
+        return $this->getExcerpt() . ($this->seoKeywords() ? " - {$this->seoKeywords()}" : '');
     }
 }
