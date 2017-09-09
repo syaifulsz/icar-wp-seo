@@ -67,7 +67,7 @@ class Admin
         return $this->model->input_name($name);
     }
 
-    public function seo_admin()
+    public function run()
     {
         add_action('admin_menu', function() {
 
