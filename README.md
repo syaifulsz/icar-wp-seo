@@ -4,7 +4,7 @@ An awesome SEO plugin that does everything for you with minor setting requiremen
 
 ## Installation
 
-[Download](https://github.com/syaifulsz/bootstrap-helper-blocks/releases) latest version and unzip this file into `wp-content/plugins` folder.
+[Download](https://github.com/syaifulsz/icar-wp-seo/releases) latest version and unzip this file into `wp-content/plugins` folder.
 
 And then activate **iCar WP SEO** plugin from the Admin Panel or use WP-CLI
 
