@@ -1,0 +1,22 @@
+{
+    "name": "syaifulshah/icar-wp-seo",
+    "description": "An awesome SEO plugin that does everything for you with minor setting requirements. This plugin covers SEO optimisation for previous and upcoming posts.",
+    "keywords": [
+        "wordpress",
+        "seo"
+    ],
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0+",
+    "support": {
+		"issues": "https://github.com/syaifulsz/icar-wp-seo/issues",
+		"wiki": "https://github.com/syaifulsz/icar-wp-seo/wiki",
+		"source": "https://github.com/syaifulsz/icar-wp-seo"
+	},
+    "authors": [
+        {
+            "name": "Syaiful Shah Zinan",
+            "email": "syaiful.shah@icarasia.com"
+        }
+    ],
+    "require": {}
+}
