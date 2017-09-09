@@ -17,6 +17,7 @@ class Post
     protected $categories;
     protected $category_main;
     protected $author;
+    protected $keyword_exclude;
 
     protected $app_name;
     protected $app_logo;
@@ -104,6 +105,21 @@ class Post
         return get_author_posts_url($this->author_ID);
     }
 
+    public function seoKeywordsTitle($returnArray = false)
+    {
+        $keywords = [];
+        $title = $this->title;
+        $tags = explode(' ', $title);
+        foreach ($tags as $tag) {
+            if (is_array($this->keyword_exclude) && !in_array($tag, $this->keyword_exclude)) {
+                $keywords[sanitize_title($tag)] = ucfirst($tag);
+            }
+        }
+        if ($returnArray) return $keywords;
+        if ($keywords) return implode(',', $keywords);
+        return null;
+    }
+
     public function seoKeywords($returnArray = false)
     {
         $keywords = [];
@@ -119,6 +135,9 @@ class Post
                 $keywords[$category->slug] = ucwords($category->name);
             }
         }
+
+        $keywords = array_merge($keywords, $this->seoKeywordsTitle(true));
+        $keywords[sanitize_title($this->app_name)] = $this->app_name;
 
         return $returnArray ? $keywords : ($keywords ? implode($keywords, ', ') : null);
     }

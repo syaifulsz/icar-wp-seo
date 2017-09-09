@@ -139,6 +139,42 @@ class Admin
         return $html;
     }
 
+    public function item_tags_html($title, $input_name, $options = [], $description = null, $placeholder = 'Pleas select...')
+    {
+        add_action('admin_footer', function() use ($input_name) {
+            echo "
+            <script>
+            jQuery(document).ready(function($) {
+                console.log('js-selectize--{$input_name}');
+                $('.js-selectize--{$input_name}').selectize({
+                    delimiter: ',',
+                    persist: false,
+                    create: function(input) {
+                        return {
+                            value: input,
+                            text: input
+                        }
+                    }
+                });
+            });
+            </script>
+            ";
+        });
+
+        $values = $this->model->getInput($input_name);
+
+        $html  = "<tr valign=\"top\"><th scope=\"row\">{$title}</th>";
+        $html .= "<td style=\"padding-top: 10px;\">";
+
+        $html .= "<input type=\"text\" name=\"{$this->model->input_name($input_name)}\" value=\"". $this->model->getInput($input_name) ."\" class=\"regular-text  js-selectize--{$input_name}\"  style=\"width: 350px; height: 38px; visibility: hidden;\" />";
+
+        if ($description) {
+            $html .= "<p class=\"description\">{$description}</p>";
+        }
+        $html .= "</td>";
+        return $html;
+    }
+
     private function get_categories()
     {
         $categories = [];

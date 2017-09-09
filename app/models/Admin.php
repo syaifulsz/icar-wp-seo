@@ -9,6 +9,8 @@ class Admin
     protected $app_logo;
     protected $language;
 
+    protected $seo_keyword_exclude;
+
     protected $seo_cache_status = false;
     protected $seo_cache_duration = 3600;
 
@@ -67,6 +69,18 @@ class Admin
     public function getAppUrl()
     {
         return site_url();
+    }
+
+    public function getKeywordExclude()
+    {
+        $tags = [];
+        if (empty($this->getInput('seo_keyword_exclude'))) return $tags;
+        $excludes = $this->getInput('seo_keyword_exclude');
+        $excludes = explode(',', $excludes);
+        foreach ($excludes as $tag) {
+            $tags[sanitize_title($tag)] = sanitize_title($tag);
+        }
+        return $tags;
     }
 
     public function getVars()
