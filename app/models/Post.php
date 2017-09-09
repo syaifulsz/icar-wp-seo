@@ -111,7 +111,7 @@ class Post
         $title = $this->title;
         $tags = explode(' ', $title);
         foreach ($tags as $tag) {
-            if (is_array($this->keyword_exclude) && !in_array($tag, $this->keyword_exclude)) {
+            if (is_array($this->keyword_exclude) && !in_array(sanitize_title($tag), $this->keyword_exclude)) {
                 $keywords[sanitize_title($tag)] = ucfirst($tag);
             }
         }
@@ -133,6 +133,12 @@ class Post
         if ($this->categories) {
             foreach ($this->categories as $category) {
                 $keywords[$category->slug] = ucwords($category->name);
+            }
+        }
+
+        foreach ($keywords as $word_key => $word) {
+            if (is_array($this->keyword_exclude) && !in_array(sanitize_title($word_key), $this->keyword_exclude)) {
+                unset($keywords[$word_key]);
             }
         }
 
