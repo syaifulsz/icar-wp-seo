@@ -37,6 +37,7 @@ class SEO
                 'app_name' => $this->admin->getInput('app_name'),
                 'app_logo' => $this->admin->getInput('app_logo'),
                 'language' => $this->admin->getInput('language'),
+                'keyword_exclude' => $this->admin->getKeywordExclude(),
                 'ID' => $post->ID,
                 'title' => $post->post_title,
                 'content' => $post->post_content,

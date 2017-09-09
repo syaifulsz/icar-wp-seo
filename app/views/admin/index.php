@@ -10,6 +10,10 @@
             <?= $this->item_html('Application Name', 'app_name') ?>
             <?= $this->item_html('Language', 'language') ?>
             <?= $this->item_media_html('Application Logo', 'app_logo') ?>
+        </table>
+
+        <h2>Main SEO settings</h2>
+        <table class="form-table">
             <?= $this->item_select_html('Cache Status', 'seo_cache_status', [
                 0 => 'OFF',
                 1 => 'ON'
@@ -19,8 +23,8 @@
                 <th valign="top">Delete Cache</th>
                 <td><p><a href="<?= admin_url($this->get_admin_url() . "&delete_all_cache=true") ?>" class="button button-primary">Delete All Cache</a></p></td>
             </tr>
+            <?= $this->item_tags_html('Exclude Keywords', 'seo_keyword_exclude') ?>
         </table>
-
 
         <h2>Social network settings</h2>
         <table class="form-table">
