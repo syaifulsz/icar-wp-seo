@@ -35,7 +35,7 @@ class SEO
         } else {
             $obj = new \iCarWPSEO\Models\Post([
                 'app_name' => $this->admin->getInput('app_name'),
-                'app_logo' => $this->admin->getInput('app_logo'),
+                'app_logo' => $this->admin->getAppLogo(true),
                 'language' => $this->admin->getInput('language'),
                 'keyword_exclude' => $this->admin->getKeywordExclude(),
                 'ID' => $post->ID,
@@ -62,7 +62,7 @@ class SEO
 
             $microdata = new \iCarWPSEO\Microdatas\Post([
                 'app_name' => $this->admin->getInput('app_name'),
-                'app_logo' => $this->admin->getAppLogo(),
+                'app_logo' => $this->admin->getAppLogo(true),
                 'app_url' => $this->admin->getAppUrl(),
                 'app_socials' => [
                     $this->admin->getTwitterUrl(),
@@ -116,7 +116,7 @@ class SEO
 
             $microdata = new \iCarWPSEO\Microdatas\Post([
                 'app_name' => $this->admin->getInput('app_name'),
-                'app_logo' => $this->admin->getAppLogo(),
+                'app_logo' => $this->admin->getAppLogo(true),
                 'app_url' => $this->admin->getAppUrl(),
                 'app_socials' => [
                     $this->admin->getTwitterUrl(),
@@ -182,7 +182,7 @@ class SEO
 
             $microdata = new \iCarWPSEO\Microdatas\Category([
                 'app_name' => $this->admin->getInput('app_name'),
-                'app_logo' => $this->admin->getAppLogo(),
+                'app_logo' => $this->admin->getAppLogo(true),
                 'app_url' => $this->admin->getAppUrl(),
                 'app_socials' => [
                     $this->admin->getTwitterUrl(),
@@ -242,7 +242,7 @@ class SEO
                 'title' => $obj->seoTitle(),
                 'description' => $obj->seoDescription(),
                 'url' => $obj->getUrl(),
-                'image' => $this->admin->getAppLogo(),
+                'image' => $this->admin->getAppLogo(true),
                 'keywords' => $obj->seoKeywords(),
                 'twitter_username' => $this->admin->getInput('social_twitter'),
                 'twitter_card' => 'summary',
@@ -252,7 +252,7 @@ class SEO
 
             $microdata = new \iCarWPSEO\Microdatas\Home([
                 'app_name' => $this->admin->getInput('app_name'),
-                'app_logo' => $this->admin->getAppLogo(),
+                'app_logo' => $this->admin->getAppLogo(true),
                 'app_url' => $this->admin->getAppUrl(),
                 'app_socials' => [
                     $this->admin->getTwitterUrl(),
