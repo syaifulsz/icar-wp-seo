@@ -20,10 +20,17 @@
 // register classes
 require __DIR__ . '/app/controllers/SEO.php';
 require __DIR__ . '/app/controllers/Admin.php';
+require __DIR__ . '/app/controllers/Taxonomy.php';
+require __DIR__ . '/app/controllers/Tag.php';
 
 $admin = new iCarWPSEO\Controllers\Admin();
-$admin->seo_admin();
-$admin_options = $admin->get_admin_options();
+$admin->run();
+
+$taxonomy_category_admin = new iCarWPSEO\Controllers\Taxonomy();
+$taxonomy_category_admin->run();
+
+$taxonomy_tag_admin = new iCarWPSEO\Controllers\Tag();
+$taxonomy_tag_admin->run();
 
 $seo = new iCarWPSEO\Controllers\SEO(new iCarWPSEO\Models\Admin());
 $seo->run();

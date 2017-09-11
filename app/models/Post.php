@@ -153,23 +153,65 @@ class Post
         return apply_filters('the_content', $this->content);
     }
 
-    public function getExcerpt($length = 150)
+    public function getExcerpt($content = null, $length = 150, $tail = '...')
     {
-        if ($this->excerpt) return $this->excerpt;
+        if (!$content && $this->excerpt) return $this->excerpt;
+        if (!$content && $this->content) $content = $this->content;
 
-        $content = strip_shortcodes($this->content); 	      // removes shortcodes if any
+        $content = strip_shortcodes($content); 	      // removes shortcodes if any
         $content = strip_tags($content); 					  // removes html if any
         $content = str_replace('&nbsp;', '', $content);
-        $content = preg_replace('/\s+/', ' ', $content);
+        $content = $this->str_clean($content);
 
         $content_length = mb_strlen($content, 'utf8');
 
-        return $content_length > $length ? mb_substr($content, 0, -($content_length - $length), 'utf8') : $content;
+        return $content_length > $length ? trim(mb_substr($content, 0, -($content_length - $length), 'utf8')) . $tail : $content;
+    }
+
+    private function str_clean($str)
+    {
+        $str = trim($str);
+        return preg_replace('!\s+!', ' ', $str);
+    }
+
+    private function get_term_seo_description($term, $term_type = 'category')
+    {
+        $term_name = ucwords($term->name);
+        $options = get_option("icarwpseo__taxonomy_{$term_type}_field_{$term->term_id}");
+        if (isset($options['seo_description'])) return [$term->slug => $options['seo_description']];
+    }
+
+    public function seoDescriptionTaxonomy()
+    {
+        $excerpt_array = [];
+
+        if (!empty($this->category_main->term_id)) {
+            if ($this->get_term_seo_description($this->category_main))
+                $excerpt_array = array_merge($excerpt_array, $this->get_term_seo_description($this->category_main));
+        }
+
+        foreach ($this->tags as $term_key => $term) {
+            $term_description = $this->get_term_seo_description($term, 'tag');
+            if ($term_description) {
+                $description = array_values($term_description);
+                $excerpt_array = array_merge($excerpt_array, $this->get_term_seo_description($term, 'tag'));
+            }
+        }
+
+        $excerpt_compiled = implode(' ', $excerpt_array);
+        if ($excerpt_compiled) $excerpt_compiled = $this->getExcerpt($excerpt_compiled, 200);
+
+        return $excerpt_compiled;
     }
 
     public function seoDescription()
     {
-        return "{$this->getExcerpt()} - {$this->seoKeywords()} - {$this->seoTitle()}";
+        $description = null;
+        if ($this->getExcerpt()) $description .= "{$this->getExcerpt()} ";
+        if ($this->seoDescriptionTaxonomy()) $description .= "{$this->seoDescriptionTaxonomy()} ";
+        if ($this->seoKeywords()) $description .= "{$this->seoKeywords()} - ";
+        if ($this->seoTitle()) $description .= "{$this->seoTitle()}";
+        return $description;
     }
 
     public function seoImages()
