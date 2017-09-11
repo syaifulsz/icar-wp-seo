@@ -102,7 +102,7 @@ class SEO
         foreach ($posts as $post) {
              $obj = new \iCarWPSEO\Models\Post([
                 'app_name' => $this->admin->getInput('app_name'),
-                'app_logo' => $this->admin->getInput('app_logo'),
+                'app_logo' => $this->admin->getAppLogo(true),
                 'language' => $this->admin->getInput('language'),
                 'ID' => $post->ID,
                 'title' => $post->post_title,
