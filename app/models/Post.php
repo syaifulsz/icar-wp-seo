@@ -190,11 +190,13 @@ class Post
                 $excerpt_array = array_merge($excerpt_array, $this->get_term_seo_description($this->category_main));
         }
 
-        foreach ($this->tags as $term_key => $term) {
-            $term_description = $this->get_term_seo_description($term, 'tag');
-            if ($term_description) {
-                $description = array_values($term_description);
-                $excerpt_array = array_merge($excerpt_array, $this->get_term_seo_description($term, 'tag'));
+        if ($this->tags) {
+            foreach ($this->tags as $term_key => $term) {
+                $term_description = $this->get_term_seo_description($term, 'tag');
+                if ($term_description) {
+                    $description = array_values($term_description);
+                    $excerpt_array = array_merge($excerpt_array, $this->get_term_seo_description($term, 'tag'));
+                }
             }
         }
 

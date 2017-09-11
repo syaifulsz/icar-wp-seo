@@ -61,7 +61,7 @@ class Post
     {
         if (!$image_url) return [];
 
-        $image = getimagesize($image_url);
+        $image = @getimagesize($image_url);
 
         if (!$image) return [];
 
