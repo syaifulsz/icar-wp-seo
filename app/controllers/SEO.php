@@ -242,7 +242,7 @@ class SEO
                 'title' => $obj->seoTitle(),
                 'description' => $obj->seoDescription(),
                 'url' => $obj->getUrl(),
-                'image' => $this->admin->getAppLogo(true),
+                'image' => $this->admin->getAppLogo(),
                 'keywords' => $obj->seoKeywords(),
                 'twitter_username' => $this->admin->getInput('social_twitter'),
                 'twitter_card' => 'summary',
