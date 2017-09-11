@@ -156,7 +156,7 @@ class SEO
         } else {
             $obj = new \iCarWPSEO\Models\Category([
                 'app_name' => $this->admin->getInput('app_name'),
-                'app_logo' => $this->admin->getInput('app_logo'),
+                'app_logo' => $this->admin->getAppLogo(true),
                 'language' => $this->admin->getInput('language'),
                 'ID' => $category->cat_ID,
                 'title' => $category->name,
@@ -229,7 +229,7 @@ class SEO
 
             $obj = new \iCarWPSEO\Models\Home([
                 'app_name' => $this->admin->getInput('app_name'),
-                'app_logo' => $this->admin->getInput('app_logo'),
+                'app_logo' => $this->admin->getAppLogo(true),
                 'language' => $this->admin->getInput('language'),
                 'title' => $this->admin->getInput('seo_home_title'),
                 'excerpt' => $this->admin->getInput('seo_home_description'),
