@@ -86,7 +86,7 @@ class Post
 
     public function getAuthorName()
     {
-        return $this->author->display_name;
+        return ucwords($this->author->display_name);
     }
 
     public function getMainCategoryName()

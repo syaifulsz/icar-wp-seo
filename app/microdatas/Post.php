@@ -93,6 +93,16 @@ class Post
         return $array;
     }
 
+    public function microdata_person($name, $url)
+    {
+        return [
+            "@context" => "http://schema.org",
+            "@type" => "Person",
+            "name" => $name,
+            "url" => $url
+        ];
+    }
+
     public function microdata_news_article()
     {
         $article = [
