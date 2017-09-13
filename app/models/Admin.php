@@ -7,6 +7,14 @@ class Admin
     public $plugin_slug = 'icarwpseo';
     protected $app_name;
     protected $app_logo;
+    protected $app_logo_static_url;
+
+    // Image size should use 1200 x 1200 (or larger) square image
+    // Facebook recommends 1200 x 630 pixels for the og:image dimensions (info),
+    // which is an approximate aspect ratio of 1.91:1
+    protected $app_logo_width = 1200;
+    protected $app_logo_height = 630;
+
     protected $language;
 
     protected $seo_keyword_exclude;
@@ -59,11 +67,32 @@ class Admin
         return $this->getInput('seo_cache_duration');
     }
 
-    public function getAppLogo()
+    public function getAppLogo($array = false)
     {
+        $image_width = get_option($this->input_name('app_logo_width')) ?: $this->app_logo_width;
+        $image_height = get_option($this->input_name('app_logo_height')) ?: $this->app_logo_height;
+
+        $url = get_option($this->input_name('app_logo_static_url'));
+        if ($url) {
+            if ($array) return ['url' => $url, 'width' => $image_width, 'height' => $image_height];
+            return $url;
+        }
+
         $id = get_option($this->input_name('app_logo'));
-        if ($id) return wp_get_attachment_url($id);
-        return null;
+        if ($id) {
+
+            $url = wp_get_attachment_url($id);
+            $image_meta = wp_get_attachment_metadata($id);
+            if ($image_meta) {
+                $image_width = $image_meta['width'];
+                $image_height = $image_meta['height'];
+            }
+
+            if ($array) return ['id' => $id, 'url' => $url, 'width' => $image_width, 'height' => $image_height];
+            return $url;
+        }
+
+        return false;
     }
 
     public function getAppUrl()
@@ -109,7 +138,7 @@ class Admin
         $array = [];
         foreach (get_object_vars($this) as $key => $value) {
             if ($key != 'plugin_slug') $array["{$this->input_name($key)}"] = get_option($this->input_name($key));
-            if ($key == 'app_logo') $array["{$this->input_name($key)}"] = $this->getAppLogo();
+            if ($key == 'app_logo') $array["{$this->input_name($key)}"] = $this->getAppLogo(true);
         }
         return $array;
     }

@@ -9,6 +9,7 @@
         <table class="form-table">
             <?= $this->item_html('Application Name', 'app_name') ?>
             <?= $this->item_html('Language', 'language') ?>
+            <?//= $this->item_html('Application Logo (Static Url)', 'app_logo_static_url', 'If you have an exact url to use for <strong>Application Logo</strong>, plugin will use this instead of the attached image.') ?>
             <?= $this->item_media_html('Application Logo', 'app_logo') ?>
         </table>
 

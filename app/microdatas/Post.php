@@ -57,27 +57,23 @@ class Post
         return array_merge($organization, $this->microdata_social_neworks());
     }
 
-    public function microdata_image($image_url)
+    public function microdata_image($image = [])
     {
-        if (!$image_url) return [];
-
-        $image = getimagesize($image_url);
-
-        if (!$image) return [];
+        if (!empty($image['url']) && !empty($image['width']) && !empty($image['height'])) return [];
 
         return [
             "@context" => "http://schema.org",
             "@type" => "ImageObject",
-            "url" => $image_url,
+            "url" => $image['url'],
             "height" => [
                 "@context" => "http://schema.org",
                 "@type" => "Intangible",
-                "name" => $image[0]
+                "name" => $image['width']
             ],
             "width" => [
                 "@context" => "http://schema.org",
                 "@type" => "Intangible",
-                "name" => $image[1]
+                "name" => $image['height']
             ]
         ];
     }
@@ -95,6 +91,16 @@ class Post
         if ($this->app_description) $array['description'] = $this->app_description;
 
         return $array;
+    }
+
+    public function microdata_person($name, $url)
+    {
+        return [
+            "@context" => "http://schema.org",
+            "@type" => "Person",
+            "name" => $name,
+            "url" => $url
+        ];
     }
 
     public function microdata_news_article()
@@ -123,10 +129,10 @@ class Post
             ]
         ];
 
-        if ($this->app_logo) {
+        if (is_array($this->app_logo) && !empty($this->app_logo['url'])) {
             $article['publisher']['logo'] = [
                 "@type" => "ImageObject",
-                "url" => $this->app_logo
+                "url" => $this->app_logo['url']
             ];
         }
 
@@ -166,10 +172,10 @@ class Post
 
         if ($position) $article['position'] = $position;
 
-        if ($this->app_logo) {
+        if (is_array($this->app_logo) && !empty($this->app_logo['url'])) {
             $article['publisher']['logo'] = [
                 "@type" => "ImageObject",
-                "url" => $this->app_logo
+                "url" => $this->app_logo['url']
             ];
         }
 
