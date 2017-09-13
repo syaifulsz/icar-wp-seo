@@ -2,6 +2,10 @@
 
 namespace iCarWPSEO\Models;
 
+require __DIR__ . '/../components/iCarHelper.php';
+
+use \iCarWPSEO\Components\iCarHelper;
+
 class Post
 {
     protected $ID;
@@ -82,7 +86,7 @@ class Post
 
     public function getAuthorName()
     {
-        return $this->author->display_name;
+        return ucwords($this->author->display_name);
     }
 
     public function getMainCategoryName()
@@ -190,11 +194,13 @@ class Post
                 $excerpt_array = array_merge($excerpt_array, $this->get_term_seo_description($this->category_main));
         }
 
-        foreach ($this->tags as $term_key => $term) {
-            $term_description = $this->get_term_seo_description($term, 'tag');
-            if ($term_description) {
-                $description = array_values($term_description);
-                $excerpt_array = array_merge($excerpt_array, $this->get_term_seo_description($term, 'tag'));
+        if ($this->tags) {
+            foreach ($this->tags as $term_key => $term) {
+                $term_description = $this->get_term_seo_description($term, 'tag');
+                if ($term_description) {
+                    $description = array_values($term_description);
+                    $excerpt_array = array_merge($excerpt_array, $this->get_term_seo_description($term, 'tag'));
+                }
             }
         }
 
@@ -232,27 +238,40 @@ class Post
         }
 
         if ($medias) {
-            foreach ($medias as $media) {
-                if ($media) {
-                    $parse = @getimagesize($media);
-                    if (isset($parse[0]) && isset($parse[1])) {
-                        $images[] = [
-                            'url' => $media,
-                            'width' => $parse[0],
-                            'height' => $parse[1]
-                        ];
+            foreach ($medias as $url) {
+                if ($url) {
+
+                    $media_url = $url;
+                    $media_width = 300;
+                    $media_height = 200;
+                    $media_id = iCarHelper::get_attachment_id_by_url($url);
+
+                    if ($media_id) {
+                        $media = wp_get_attachment_metadata($media_id);
+                        $media_url = wp_get_attachment_url($media_id);
+                        if (!empty($media['width']) && !empty($media['height'])) {
+                            $media_width = $media['width'];
+                            $media_width = $media['width'];
+                        }
                     }
+
+                    $images[] = [
+                        'url' => $media_url,
+                        'width' => $media_width,
+                        'height' => $media_height
+                    ];
                 }
             }
         }
 
-        if (!$images && $this->getAppLogo()) {
-            $parse = @getimagesize($this->getAppLogo());
-            if (isset($parse[0]) && isset($parse[1])) {
+        if (!$images && $this->getAppLogo(true)) {
+
+            $parse = $this->getAppLogo(true);
+            if (isset($parse['width']) && isset($parse['height'])) {
                 $images[] = [
-                    'url' => $this->getAppLogo(),
-                    'width' => $parse[0],
-                    'height' => $parse[1]
+                    'url' => $parse['url'],
+                    'width' => $parse['width'],
+                    'height' => $parse['height']
                 ];
             }
         }
@@ -260,10 +279,13 @@ class Post
         return $images;
     }
 
-    public function getAppLogo()
+    public function getAppLogo($array = true)
     {
-        if (is_numeric($this->app_logo)) return wp_get_attachment_url($this->app_logo);
-        return $this->app_logo;
+        if (is_array($this->app_logo) && !empty($this->app_logo['url'])) {
+            if ($array) return $this->app_logo;
+            return $this->app_logo['url'];
+        }
+        return null;
     }
 
     public function seoMainImage($returnArray = false)
@@ -271,10 +293,13 @@ class Post
         $mainImageID = get_post_thumbnail_id($this->ID);
         $mainImageUrl = null;
         $attachment = [];
+
+        // fallback for `thesis_post_image` the `thesis` WordPress theme
         if (empty($mainImageID)) {
             $thesisPostImage = get_post_meta($this->ID, 'thesis_post_image', true);
             if (!empty($thesisPostImage)) $mainImageID = get_attachment_id_by_url($thesisPostImage);
         }
+
         if ($mainImageID) $attachment = wp_get_attachment_image_src($mainImageID, 'full');
         if (isset($attachment[0])) $mainImageUrl = $attachment[0];
 

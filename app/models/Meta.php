@@ -25,7 +25,7 @@ class Meta
     public function __construct(array $array = [])
 	{
 		foreach ($array as $property => $value) {
-			if (property_exists($this, $property)) $this->$property = trim($value);
+			if (property_exists($this, $property)) $this->$property = $value;
 		}
 	}
 
@@ -65,6 +65,7 @@ class Meta
         $seo['og:description'] = $this->description;
         $seo['og:site_name'] = $this->app_name;
         $seo['og:image'] = $this->image;
+
         $seo['og:locale'] = $this->language;
         $seo['og:url'] = $this->url;
         $seo['og:type'] = $this->og_type;
