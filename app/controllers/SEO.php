@@ -368,8 +368,6 @@ class SEO
 
             $query = new \WP_Query($settings);
 
-            // $author_meta = get_userdata($author);
-
             $obj = new \iCarWPSEO\Models\Author([
                 'app_name' => $this->admin->getInput('app_name'),
                 'app_logo' => $this->admin->getAppLogo(true),
@@ -429,7 +427,11 @@ class SEO
     {
         add_filter('wp_head', function() {
 
-            if (is_page()) {
+            if (is_front_page() || is_home()) {
+
+                $this->seo_home();
+
+            } else if (is_page()) {
 
                 global $post;
                 $this->seo_page($post);
@@ -450,10 +452,6 @@ class SEO
                 global $author;
                 global $posts;
                 $this->seo_author($author, $posts);
-
-            } else if (is_front_page()) {
-
-                $this->seo_home();
 
             }
 		});
