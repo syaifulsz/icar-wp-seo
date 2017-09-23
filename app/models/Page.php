@@ -23,13 +23,16 @@ class Page extends \iCarWPSEO\Models\Post
 
     public function seoTitle()
     {
+        if ($this->seo_title) return "{$this->seo_title} - {$this->app_name}";
         return "{$this->title} - {$this->app_name}";
     }
 
     public function seoDescription()
     {
         $description = null;
-        if ($this->getExcerpt()) {
+        if ($this->seo_description) {
+            $description .= "{$this->seo_description} - ";
+        } else if ($this->getExcerpt()) {
             $description .= "{$this->getExcerpt()} ";
         } else {
             $description .= get_bloginfo('description') . ' ';
