@@ -22,6 +22,8 @@ require __DIR__ . '/app/controllers/SEO.php';
 require __DIR__ . '/app/controllers/Admin.php';
 require __DIR__ . '/app/controllers/Taxonomy.php';
 require __DIR__ . '/app/controllers/Tag.php';
+require __DIR__ . '/app/controllers/CustomMetabox.php';
+require __DIR__ . '/app/controllers/CustomMetaboxQuickEdit.php';
 
 $admin = new iCarWPSEO\Controllers\Admin();
 $admin->run();
@@ -34,3 +36,6 @@ $taxonomy_tag_admin->run();
 
 $seo = new iCarWPSEO\Controllers\SEO(new iCarWPSEO\Models\Admin());
 $seo->run();
+
+new iCarWPSEO\Controllers\CustomMetabox();
+new iCarWPSEO\Controllers\CustomMetaboxQuickEdit();
