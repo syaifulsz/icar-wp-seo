@@ -234,9 +234,11 @@ class SEO
             echo get_transient($cache_key);
         } else {
 
-            $seo_description = $this->admin->getInput('category_seo_description');
+            $seo_description = $this->admin->getTaxonomyInput($category->cat_ID, 'seo_description');
             if (!$seo_description) $seo_description = $category->description;
-            if (!$seo_description) $seo_description = $this->admin->getTaxonomyInput($category->cat_ID, 'seo_description');
+            if (!$seo_description) $seo_description = $this->admin->getInput('category_seo_description');
+            if (!$seo_description) $seo_description = $this->admin->getInput('home_seo_description');
+            if (!$seo_description) $seo_description = get_bloginfo('description');
 
             $obj = new \iCarWPSEO\Models\Category([
                 'app_name' => $this->admin->getInput('app_name'),
