@@ -244,7 +244,10 @@ class Post
                     $media_url = $url;
                     $media_width = 300;
                     $media_height = 200;
-                    $media_id = iCarHelper::get_attachment_id_by_url($url);
+
+                    // @TODO Temporarily disable for now, making too much query with site with many images
+                    // $media_id = iCarHelper::get_attachment_id_by_url($url);
+                    $media_id = false;
 
                     if ($media_id) {
                         $media = wp_get_attachment_metadata($media_id);
