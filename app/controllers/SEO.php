@@ -48,7 +48,10 @@ class SEO
                 'date_published' => $post->post_date,
                 'date_modified' => $post->post_modified,
                 'author_ID' => $post->post_author,
-                'type' => $post->post_type
+                'type' => $post->post_type,
+
+                'seo_title' => get_post_meta($post->ID, '_icarwpseo_seo_title', true),
+                'seo_description' => get_post_meta($post->ID, '_icarwpseo_seo_description', true)
             ]);
 
             $meta = new \iCarWPSEO\Models\Meta([
@@ -118,7 +121,10 @@ class SEO
                 'date_published' => $post->post_date,
                 'date_modified' => $post->post_modified,
                 'author_ID' => $post->post_author,
-                'type' => $post->post_type
+                'type' => $post->post_type,
+
+                'seo_title' => get_post_meta($post->ID, '_icarwpseo_seo_title', true),
+                'seo_description' => get_post_meta($post->ID, '_icarwpseo_seo_description', true)
             ]);
 
             $meta = new \iCarWPSEO\Models\Meta([
@@ -227,6 +233,13 @@ class SEO
         if ($this->admin->getInput('seo_cache_status') && get_transient($cache_key)) {
             echo get_transient($cache_key);
         } else {
+
+            $seo_description = $this->admin->getTaxonomyInput($category->cat_ID, 'seo_description');
+            if (!$seo_description) $seo_description = $category->description;
+            if (!$seo_description) $seo_description = $this->admin->getInput('category_seo_description');
+            if (!$seo_description) $seo_description = $this->admin->getInput('home_seo_description');
+            if (!$seo_description) $seo_description = get_bloginfo('description');
+
             $obj = new \iCarWPSEO\Models\Category([
                 'app_name' => $this->admin->getInput('app_name'),
                 'app_logo' => $this->admin->getAppLogo(true),
@@ -234,9 +247,11 @@ class SEO
                 'ID' => $category->cat_ID,
                 'title' => $category->name,
                 'content' => $category->description,
-                'excerpt' => $this->admin->getInput('category_seo_description'),
+                'excerpt' => $seo_description,
                 'type' => $category->taxonomy,
-                'posts' => $posts
+                'posts' => $posts,
+
+                'seo_description' => $seo_description
             ]);
 
             $meta = new \iCarWPSEO\Models\Meta([

@@ -27,6 +27,9 @@ class Post
     protected $app_logo;
     protected $language;
 
+    protected $seo_title;
+    protected $seo_description;
+
     public function __construct(array $array = [])
 	{
 		foreach ($array as $property => $value) {
@@ -96,6 +99,7 @@ class Post
 
     public function seoTitle()
     {
+        if ($this->seo_title) return "{$this->seo_title} - {$this->getMainCategoryName()} - {$this->app_name}";
         return "{$this->title} - {$this->getMainCategoryName()} - {$this->app_name}";
     }
 
@@ -213,9 +217,13 @@ class Post
     public function seoDescription()
     {
         $description = null;
-        if ($this->getExcerpt()) $description .= "{$this->getExcerpt()} ";
-        if ($this->seoDescriptionTaxonomy()) $description .= "{$this->seoDescriptionTaxonomy()} ";
-        if ($this->seoKeywords()) $description .= "{$this->seoKeywords()} - ";
+        if ($this->seo_description) {
+            $description .= "{$this->seo_description} - ";
+        } else {
+            if ($this->getExcerpt()) $description .= "{$this->getExcerpt()} ";
+            if ($this->seoDescriptionTaxonomy()) $description .= "{$this->seoDescriptionTaxonomy()} ";
+            if ($this->seoKeywords()) $description .= "{$this->seoKeywords()} - ";
+        }
         if ($this->seoTitle()) $description .= "{$this->seoTitle()}";
         return $description;
     }

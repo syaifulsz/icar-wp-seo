@@ -51,6 +51,13 @@ class Admin
         if (property_exists($this, $property)) return $this->$property;
     }
 
+    public function getTaxonomyInput($id, $key, $taxonomy = 'category')
+    {
+        $options = get_option("icarwpseo__taxonomy_{$taxonomy}_field_{$id}");
+        if (!empty($options[$key])) return $options[$key];
+        return null;
+    }
+
     public function getCacheDurationText()
     {
         $duration = $this->getInput('seo_cache_duration');
